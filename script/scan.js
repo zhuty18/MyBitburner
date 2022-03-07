@@ -56,12 +56,15 @@ async function attack (ns, a) {
         if (ram != 0) {
             var target = a
             if (target == "CSEC" || target == "avmnite-02h") {
+                // await ns.installBackdoor(target);
                 target = "n00dles"
             }
             else if (target == "I.I.I.I") {
+                // await ns.installBackdoor(target);
                 target = "crush-fitness"
             }
             else if (target == "run4theh111z") {
+                // await ns.installBackdoor(target);
                 target = "crush-fitness"
             }
             ns.exec("easy_loop.js", a, 1, target, ram)

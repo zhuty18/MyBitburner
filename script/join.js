@@ -1,5 +1,5 @@
 /** @param {NS} ns **/
 export async function main (ns) {
     var target = ns.args[0]
-    await ns.backdoor(target);
+    await ns.installBackdoor(target);
 }

@@ -1,15 +1,21 @@
 /** @param {NS} ns **/
 
 export async function main (ns) {
+    var fresh = ns.args[0]
     ns.disableLog("scan");
     ns.disableLog("scp");
     ns.disableLog("getServerRequiredHackingLevel");
     ns.disableLog("getServerMaxRam");
     ns.disableLog("getServerNumPortsRequired");
     ns.disableLog("asleep");
-    while (true) {
-        await loop(ns, "home", 0, "");
-        await ns.asleep(30000);
+    if (fresh != null) {
+        await loop(ns, fresh, "home", 0, "")
+    }
+    else {
+        while (true) {
+            await loop(ns, null, "home", 0, "");
+            await ns.asleep(30000);
+        }
     }
 }
 async function attack (ns, a) {
@@ -55,19 +61,32 @@ async function attack (ns, a) {
         ns.print("get access of " + a + "!")
         if (ram != 0) {
             var target = a
-            if (target == "CSEC" || target == "avmnite-02h") {
+            if (target == "CSEC") {
                 // await ns.installBackdoor(target);
                 target = "n00dles"
             }
+            else if (target == "avmnite-02h") {
+                target = "crush-fitness"
+            }
             else if (target == "I.I.I.I") {
                 // await ns.installBackdoor(target);
-                target = "crush-fitness"
+                target = "comptek"
             }
             else if (target == "run4theh111z") {
                 // await ns.installBackdoor(target);
                 target = "crush-fitness"
             }
-            ns.exec("easy_loop.js", a, 1, target, ram)
+            else if (target == ".") {
+                // await ns.installBackdoor(target);
+                target = "syscore"
+            }
+            if (ram <= 8) {
+                await ns.scp(["foo.js"], a);
+                ns.exec("foo.js", a, ram / 1.7, target)
+            }
+            else {
+                ns.exec("easy_loop.js", a, 1, target, ram)
+            }
         }
     }
 }
@@ -81,8 +100,8 @@ function str (len, a) {
     return res
 }
 
-async function loop (ns, a, len, father) {
-    if (!ns.hasRootAccess(a)) {
+async function loop (ns, fresh, a, len, father) {
+    if ((!ns.hasRootAccess(a)) || (fresh != null)) {
         await attack(ns, a);
     }
     // ns.print(str(len,a))
@@ -97,7 +116,7 @@ async function loop (ns, a, len, father) {
     for (var i = 0; i < l; i++) {
         if (h[i] != father) {
             var target = h[i];
-            await loop(ns, target, len + 2, a);
+            await loop(ns, fresh, target, len + 2, a);
         }
     }
 }

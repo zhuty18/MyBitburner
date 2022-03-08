@@ -80,7 +80,7 @@ async function attack (ns, a) {
                 // await ns.installBackdoor(target);
                 target = "syscore"
             }
-            if (ram <= 8) {
+            if (ram < 8) {
                 await ns.scp(["foo.js"], a);
                 ns.exec("foo.js", a, ram / 1.7, target)
             }

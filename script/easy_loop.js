@@ -9,7 +9,7 @@ export async function main (ns) {
             ns.run("grow.js", gw, target)
             await ns.asleep(ns.getGrowTime(target) + 1000)
         }
-        else if ((ns.getServerSecurityLevel(target) - ns.getServerMinSecurityLevel(target)) > gw * 0.05) {
+        else if ((ns.getServerSecurityLevel(target) - gw * 0.05) / ns.getServerMinSecurityLevel(target) > 5) {
             ns.run("weaken.js", gw, target)
             await ns.asleep(ns.getWeakenTime(target) + 1000)
         }

@@ -28,5 +28,9 @@ function res (ns, father, current, target, depth) {
 export async function main (ns) {
     ns.disableLog("scan")
     var target = ns.args[0]
-    res(ns, "", "home", target, 0)
+    var from = ns.args[1]
+    if (from == null) {
+        from = "home"
+    }
+    res(ns, "", from, target, 0)
 }

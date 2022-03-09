@@ -3,10 +3,11 @@ export async function main (ns) {
     var h = ns.args[0]
     var ram = ns.args[1]
     var num = ns.args[2]
-    var buy = ns.args[3]
+    var pur = ns.args[3]
+    ns.print(ns.getPurchasedServerCost(ram))
     for (var i = 0; i < num; i++) {
-        var target = "pur-" + h + "-" + i
-        if (buy != null) {
+        var target = h + "_" + i
+        if (pur != null) {
             ns.purchaseServer(target, ram);
         }
         await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], target);

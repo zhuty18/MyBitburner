@@ -10,11 +10,54 @@ export async function main (ns) {
     ns.disableLog("asleep");
     if (fresh != null) {
         await loop(ns, fresh, "home", 0, "")
+        var l = ns.getPurchasedServers()
+        for (var i = 0; i < l.length; i++) {
+            await fresh(ns, l[i], true)
+        }
     }
     else {
         while (true) {
             await loop(ns, null, "home", 0, "");
             await ns.asleep(30000);
+        }
+    }
+}
+async function fresh (ns, a, pur) {
+    await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], a);
+    var ram = ns.getServerMaxRam(a)
+    ns.tprint("get access of " + a + " " + ram)
+    ns.print("get access of " + a + "!")
+    if (pur) {
+        var target = a.split("_")[0]
+        ns.exec("easy_loop.js", a, 1, target, ram)
+    }
+    else if (ram != 0) {
+        var target = a
+        if (target == "CSEC") {
+            // await ns.installBackdoor(target);
+            target = "n00dles"
+        }
+        else if (target == "avmnite-02h") {
+            target = "crush-fitness"
+        }
+        else if (target == "I.I.I.I") {
+            // await ns.installBackdoor(target);
+            target = "comptek"
+        }
+        else if (target == "run4theh111z") {
+            // await ns.installBackdoor(target);
+            target = "crush-fitness"
+        }
+        else if (target == ".") {
+            // await ns.installBackdoor(target);
+            target = "syscore"
+        }
+        if (ram < 8) {
+            await ns.scp(["foo.js"], a);
+            ns.exec("foo.js", a, ram / 1.7, target)
+        }
+        else {
+            ns.exec("easy_loop.js", a, 1, target, ram)
         }
     }
 }
@@ -55,39 +98,7 @@ async function attack (ns, a) {
 
         }
         ns.nuke(a);
-        await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], a);
-        var ram = ns.getServerMaxRam(a)
-        ns.tprint("get access of " + a + " " + ram)
-        ns.print("get access of " + a + "!")
-        if (ram != 0) {
-            var target = a
-            if (target == "CSEC") {
-                // await ns.installBackdoor(target);
-                target = "n00dles"
-            }
-            else if (target == "avmnite-02h") {
-                target = "crush-fitness"
-            }
-            else if (target == "I.I.I.I") {
-                // await ns.installBackdoor(target);
-                target = "comptek"
-            }
-            else if (target == "run4theh111z") {
-                // await ns.installBackdoor(target);
-                target = "crush-fitness"
-            }
-            else if (target == ".") {
-                // await ns.installBackdoor(target);
-                target = "syscore"
-            }
-            if (ram < 8) {
-                await ns.scp(["foo.js"], a);
-                ns.exec("foo.js", a, ram / 1.7, target)
-            }
-            else {
-                ns.exec("easy_loop.js", a, 1, target, ram)
-            }
-        }
+        await fresh(ns, a, false);
     }
 }
 

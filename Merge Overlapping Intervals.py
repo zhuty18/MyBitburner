@@ -1,4 +1,4 @@
-a =[[19,29],[9,18],[4,12],[24,29],[6,13],[13,21],[1,4],[3,6],[11,14],[8,15],[22,23],[1,4],[8,9],[12,18],[11,17]]
+a = [[20, 24], [4, 8], [16, 26], [2, 6]]
 min = -1
 max = -1
 for i in a:
@@ -19,7 +19,7 @@ for i in range(min, max + 1):
     if last == 0 and b[i - min] == 1:
         head = i
     if last == 1 and b[i - min] == 0:
-        res.append([head, i])
+        res.append([head, i - 1])
     last = b[i - min]
-res.append([head, i])
+res.append([head, max])
 print(res)

@@ -16,11 +16,14 @@ for i in range(l):
     if l - i >= 3 and check(a[i:i + 3]):
         pos.append([i, i + 3])
 
+res = []
 # print(pos)
 for i in range(1, 4):
     if [0, i] in pos:
         for j in range(i + 1, l + 4):
             if [i, j] in pos:
                 for k in range(j + 1, j + 4):
-                    if [j, k] in pos and [k, l ] in pos:
-                        print(a[0:i] + "." + a[i:j] + "." + a[j:k] + "." + a[k:l])
+                    if [j, k] in pos and [k, l] in pos:
+                        res.append(a[0:i] + "." + a[i:j] + "." + a[j:k] + "." + a[k:l])
+
+print(", ".join(res))

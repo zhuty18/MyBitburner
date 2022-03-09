@@ -39,3 +39,45 @@ for i in range(len(pick)):
         pot_new.append(pot[i])
 
 print(pot_new)
+pick = [0] * (len(pot_new))
+
+
+def p(i, pick, pot):
+    res = [i]
+    pick[i] = 1
+    for j in range(i + 1, len(pot)):
+        if (not pot[i][1][0] > pot[j][1][1]) and (not pot[j][1][0] > pot[i][1][1]):
+            pick[j] = 1
+            res.append(j)
+    return res
+
+
+def unp(l, pick):
+    for i in l:
+        pick[i] = 0
+
+
+def loop(index, time, pick, pot):
+    if index == len(pot):
+        return 0, []
+    elif time == 1:
+        for i in range(index, len(pot)):
+            if pick[i] == 0:
+                return pot[i][0], [pot[i]]
+        return 0, []
+    m = 0
+    h = []
+    for i in range(index, len(pot)):
+        if pick[i] == 0:
+            c = p(i, pick, pot)
+            t, l = loop(i + 1, time - 1, pick, pot)
+            t += pot[i][0]
+            unp(c, pick)
+            if t > m:
+                m = t
+                h = [pot[i]]
+                h.extend(l)
+    return m, h
+
+
+print(loop(0, 2, pick, pot_new))

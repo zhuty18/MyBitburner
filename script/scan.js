@@ -1,15 +1,14 @@
 /** @param {NS} ns **/
-
 export async function main (ns) {
-    var fresh = ns.args[0]
+    var fre = ns.args[0]
     ns.disableLog("scan");
     ns.disableLog("scp");
     ns.disableLog("getServerRequiredHackingLevel");
     ns.disableLog("getServerMaxRam");
     ns.disableLog("getServerNumPortsRequired");
     ns.disableLog("asleep");
-    if (fresh != null) {
-        await loop(ns, fresh, "home", 0, "")
+    if (fre != null) {
+        await loop(ns, fre, "home", 0, "")
         var l = ns.getPurchasedServers()
         for (var i = 0; i < l.length; i++) {
             await fresh(ns, l[i], true)
@@ -111,8 +110,8 @@ function str (len, a) {
     return res
 }
 
-async function loop (ns, fresh, a, len, father) {
-    if ((!ns.hasRootAccess(a)) || (fresh != null)) {
+async function loop (ns, fre, a, len, father) {
+    if ((!ns.hasRootAccess(a)) || (fre != null)) {
         await attack(ns, a);
     }
     // ns.print(str(len,a))
@@ -127,7 +126,7 @@ async function loop (ns, fresh, a, len, father) {
     for (var i = 0; i < l; i++) {
         if (h[i] != father) {
             var target = h[i];
-            await loop(ns, fresh, target, len + 2, a);
+            await loop(ns, fre, target, len + 2, a);
         }
     }
 }

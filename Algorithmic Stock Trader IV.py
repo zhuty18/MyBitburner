@@ -37,7 +37,7 @@ for i in range(len(pick)):
     if pick[i] == 0:
         pot_new.append(pot[i])
 
-print(pot_new)
+# print(pot_new)
 pick = [0] * (len(pot_new))
 
 

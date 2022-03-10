@@ -9,7 +9,7 @@ for i in a:
 
 b = [0] * (max - min + 1)
 for i in a:
-    for j in range(i[0], i[1] + 1):
+    for j in range(i[0], i[1]):
         b[j - min] = 1
 
 last = 0
@@ -19,7 +19,7 @@ for i in range(min, max + 1):
     if last == 0 and b[i - min] == 1:
         head = i
     if last == 1 and b[i - min] == 0:
-        res.append([head, i - 1])
+        res.append([head, i])
     last = b[i - min]
-res.append([head, max])
+# res.append([head, max])
 print(res)

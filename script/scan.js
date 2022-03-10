@@ -9,10 +9,10 @@ export async function main (ns) {
     ns.disableLog("asleep");
     if (fre != null) {
         await loop(ns, fre, "home", 0, "")
-        var l = ns.getPurchasedServers()
-        for (var i = 0; i < l.length; i++) {
-            await fresh(ns, l[i], true)
-        }
+        // var l = ns.getPurchasedServers()
+        // for (var i = 0; i < l.length; i++) {
+        //     await fresh(ns, l[i])
+        // }
     }
     else {
         while (true) {
@@ -21,12 +21,12 @@ export async function main (ns) {
         }
     }
 }
-async function fresh (ns, a, pur) {
+async function fresh (ns, a) {
     await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], a);
     var ram = ns.getServerMaxRam(a)
     ns.tprint("get access of " + a + " " + ram)
     ns.print("get access of " + a + "!")
-    if (pur) {
+    if (a.search("_") != -1) {
         var target = a.split("_")[0]
         ns.exec("easy_loop.js", a, 1, target, ram)
     }
@@ -45,9 +45,13 @@ async function fresh (ns, a, pur) {
         }
         else if (target == "run4theh111z") {
             // await ns.installBackdoor(target);
-            target = "crush-fitness"
+            target = "aerocorp"
         }
         else if (target == ".") {
+            // await ns.installBackdoor(target);
+            target = "syscore"
+        }
+        else if (target == "The-Cave") {
             // await ns.installBackdoor(target);
             target = "syscore"
         }
@@ -55,8 +59,32 @@ async function fresh (ns, a, pur) {
             await ns.scp(["foo.js"], a);
             ns.exec("foo.js", a, ram / 1.7, target)
         }
-        else {
+        else if (target != "home") {
             ns.exec("easy_loop.js", a, 1, target, ram)
+        }
+    }
+    else {
+        var l1 = ["crush-fitness", "comptek", "aerocorp", "syscore", "The-Cave"]
+        var l2 = ns.getPurchasedServers();
+        var have = false
+        for (var i = 0; i < l1.length; i++) {
+            if (a == l1[i]) {
+                have = true
+                break
+            }
+        }
+        for (var i = 0; i < l2.length; i++) {
+            var h = l2[i].split("_")[0]
+            if (a == h) {
+                have = true
+                break
+            }
+        }
+        if (!have) {
+            var name = a + "_0"
+            ns.purchaseServer(name, 1024);
+            await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], name);
+            ns.exec("easy_loop.js", name, 1, a, 1024)
         }
     }
 }
@@ -97,7 +125,7 @@ async function attack (ns, a) {
 
         }
         ns.nuke(a);
-        await fresh(ns, a, false);
+        await fresh(ns, a);
     }
 }
 

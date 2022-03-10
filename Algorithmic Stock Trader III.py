@@ -1,6 +1,6 @@
 b = [
-    129, 37, 28, 192, 62, 96, 148, 128, 104, 142, 144, 137, 133, 126, 91, 43, 135, 54, 194, 22, 82, 167, 117, 69, 77, 126, 36,
-    69, 96, 38, 123, 30, 177, 55, 174, 103, 186, 125, 110, 133, 15, 112, 7, 189, 192, 161, 127, 24, 169, 91
+    156, 53, 37, 33, 41, 122, 71, 189, 102, 39, 38, 114, 117, 61, 4, 72, 49, 22, 177, 126, 37, 77, 28, 89, 121, 123, 169, 151,
+    168, 47, 116, 86, 108, 142, 83, 114, 167, 55, 141, 134, 145, 27
 ]
 
 l = len(b)
@@ -38,7 +38,7 @@ for i in range(len(pick)):
     if pick[i] == 0:
         pot_new.append(pot[i])
 
-print(pot_new)
+# print(pot_new)
 pick = [0] * (len(pot_new))
 
 
@@ -59,25 +59,22 @@ def unp(l, pick):
 
 def loop(index, time, pick, pot):
     if index == len(pot):
-        return 0, []
+        return 0
     elif time == 1:
         for i in range(index, len(pot)):
             if pick[i] == 0:
-                return pot[i][0], [pot[i]]
-        return 0, []
+                return pot[i][0]
+        return 0
     m = 0
-    h = []
     for i in range(index, len(pot)):
         if pick[i] == 0:
             c = p(i, pick, pot)
-            t, l = loop(i + 1, time - 1, pick, pot)
+            t = loop(i + 1, time - 1, pick, pot)
             t += pot[i][0]
             unp(c, pick)
             if t > m:
                 m = t
-                h = [pot[i]]
-                h.extend(l)
-    return m, h
+    return m
 
 
 print(loop(0, 2, pick, pot_new))

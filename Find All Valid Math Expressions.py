@@ -1,3 +1,5 @@
+a = ["82113243", -90]
+
 def allExpressions(data, target):
     operators = ['+', '-', '*', '']
     expressions = []
@@ -23,7 +25,5 @@ def allExpressions(data, target):
             pass
     return exp
 
-
-a = ["106643344", 30]
 
 print(",".join(allExpressions(a[0], a[1])))

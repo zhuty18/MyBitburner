@@ -1,10 +1,4 @@
-a = [
-    3,
-    [
-        100, 19, 155, 197, 132, 179, 70, 176, 153, 74, 33, 125, 184, 192, 24, 149, 9, 186, 53, 10, 170, 155, 94, 23, 89, 138,
-        136, 131, 145, 117, 107, 58, 163, 96, 136, 12, 105, 97, 133, 129, 181, 172, 4
-    ]
-]
+a = [5, [138, 79, 73, 44, 5, 85, 129, 129]]
 
 time = a[0]
 b = a[1]
@@ -13,10 +7,12 @@ min = []
 max = []
 
 for i in range(l - 1):
-    if (i == l - 1 or b[i + 1] > b[i]) and (i == 0 or b[i - 1] > b[i]):
+    if (i == l - 1 or b[i + 1] >= b[i]) and (i == 0 or b[i - 1] >= b[i]):
         min.append(i)
-    if (i == l - 1 or b[i + 1] < b[i]) and (i == 0 or b[i - 1] < b[i]):
+    if (i == l - 1 or b[i + 1] <= b[i]) and (i == 0 or b[i - 1] <= b[i]):
         max.append(i)
+if b[-1] >= b[-2]:
+    max.append(l - 1)
 
 pot: list[int, list[int, int]] = []
 for i in min:
@@ -37,7 +33,7 @@ for i in range(len(pick)):
     if pick[i] == 0:
         pot_new.append(pot[i])
 
-# print(pot_new)
+print(pot_new)
 pick = [0] * (len(pot_new))
 
 
@@ -79,4 +75,4 @@ def loop(index, time, pick, pot):
     return m, h
 
 
-print(loop(0, time, pick, pot_new))
+print(loop(0, time, pick, pot_new)[0])

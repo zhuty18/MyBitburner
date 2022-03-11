@@ -24,67 +24,69 @@ async function fresh (ns, a, fre) {
         var target = a.split("_")[0]
         ns.exec("easy_loop.js", a, 1, target, ram)
     }
-    else if (ram != 0) {
+    else {
         ns.tprint("get access of " + a + " " + ram)
         ns.print("get access of " + a + "!")
-        var target = a
-        if (target == "CSEC") {
-            // await ns.installBackdoor(target);
-            target = "n00dles"
-        }
-        else if (target == "avmnite-02h") {
-            target = "n00dles"
-        }
-        else if (target == "I.I.I.I") {
-            // await ns.installBackdoor(target);
-            target = "n00dles"
-        }
-        else if (target == "run4theh111z") {
-            // await ns.installBackdoor(target);
-            target = "n00dles"
-        }
-        else if (target == ".") {
-            // await ns.installBackdoor(target);
-            target = "n00dles"
-        }
-        else if (target == "The-Cave") {
-            // await ns.installBackdoor(target);
-            target = "n00dles"
-        }
-        if (ram < 8) {
-            await ns.scp(["foo.js"], a);
-            ns.exec("foo.js", a, ram / 1.7, target)
-        }
-        else if (target != "home") {
-            ns.exec("easy_loop.js", a, 1, target, ram)
-        }
-    }
-    else {
-        var l1 = ["The-Cave"]
-        var have = false
-        for (var i = 0; i < l1.length; i++) {
-            if (a == l1[i]) {
-                have = true
-                break
+        if (ram != 0) {
+            var target = a
+            if (target == "CSEC") {
+                // await ns.installBackdoor(target);
+                target = "n00dles"
+            }
+            else if (target == "avmnite-02h") {
+                target = "n00dles"
+            }
+            else if (target == "I.I.I.I") {
+                // await ns.installBackdoor(target);
+                target = "n00dles"
+            }
+            else if (target == "run4theh111z") {
+                // await ns.installBackdoor(target);
+                target = "n00dles"
+            }
+            else if (target == ".") {
+                // await ns.installBackdoor(target);
+                target = "n00dles"
+            }
+            else if (target == "The-Cave") {
+                // await ns.installBackdoor(target);
+                target = "n00dles"
+            }
+            if (ram < 8) {
+                await ns.scp(["foo.js"], a);
+                ns.exec("foo.js", a, ram / 1.7, target)
+            }
+            else if (target != "home") {
+                ns.exec("easy_loop.js", a, 1, target, ram)
             }
         }
-        if (!have) {
-            var l2 = ns.getPurchasedServers();
-            var purchased = false
-            for (var j = 0; j < fre; j++) {
-                var h = a + "_" + j
-                for (var i = 0; i < l2.length; i++) {
-                    if (h == l2[i]) {
-                        purchased = true
-                        break
-                    }
+        else {
+            var l1 = ["The-Cave"]
+            var have = false
+            for (var i = 0; i < l1.length; i++) {
+                if (a == l1[i]) {
+                    have = true
+                    break
                 }
-                if (!purchased) {
-                    if (await ns.prompt("buy server by " + ns.getPurchasedServerCost(1024) / 1000000 + "m?")) {
-                        ns.purchaseServer(h, 1024);
-                        ns.tprint("bought server " + h + "!")
-                        await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], h);
-                        ns.exec("easy_loop.js", h, 1, a, 1024)
+            }
+            if (!have) {
+                var l2 = ns.getPurchasedServers();
+                var purchased = false
+                for (var j = 0; j < fre; j++) {
+                    var h = a + "_" + j
+                    for (var i = 0; i < l2.length; i++) {
+                        if (h == l2[i]) {
+                            purchased = true
+                            break
+                        }
+                    }
+                    if (!purchased) {
+                        if (await ns.prompt("buy server by " + ns.getPurchasedServerCost(1024) / 1000000 + "m?")) {
+                            ns.purchaseServer(h, 1024);
+                            ns.tprint("bought server " + h + "!")
+                            await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], h);
+                            ns.exec("easy_loop.js", h, 1, a, 1024)
+                        }
                     }
                 }
             }

@@ -9,10 +9,6 @@ export async function main (ns) {
     ns.disableLog("asleep");
     if (fre != null) {
         await loop(ns, fre, "home", 0, "")
-        // var l = ns.getPurchasedServers()
-        // for (var i = 0; i < l.length; i++) {
-        //     await fresh(ns, l[i])
-        // }
     }
     else {
         while (true) {
@@ -21,39 +17,39 @@ export async function main (ns) {
         }
     }
 }
-async function fresh (ns, a) {
+async function fresh (ns, a, fre) {
     await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], a);
     var ram = ns.getServerMaxRam(a)
-    ns.tprint("get access of " + a + " " + ram)
-    ns.print("get access of " + a + "!")
     if (a.search("_") != -1) {
         var target = a.split("_")[0]
         ns.exec("easy_loop.js", a, 1, target, ram)
     }
     else if (ram != 0) {
+        ns.tprint("get access of " + a + " " + ram)
+        ns.print("get access of " + a + "!")
         var target = a
         if (target == "CSEC") {
             // await ns.installBackdoor(target);
             target = "n00dles"
         }
         else if (target == "avmnite-02h") {
-            target = "crush-fitness"
+            target = "n00dles"
         }
         else if (target == "I.I.I.I") {
             // await ns.installBackdoor(target);
-            target = "comptek"
+            target = "n00dles"
         }
         else if (target == "run4theh111z") {
             // await ns.installBackdoor(target);
-            target = "aerocorp"
+            target = "n00dles"
         }
         else if (target == ".") {
             // await ns.installBackdoor(target);
-            target = "syscore"
+            target = "n00dles"
         }
         else if (target == "The-Cave") {
             // await ns.installBackdoor(target);
-            target = "syscore"
+            target = "n00dles"
         }
         if (ram < 8) {
             await ns.scp(["foo.js"], a);
@@ -64,8 +60,7 @@ async function fresh (ns, a) {
         }
     }
     else {
-        var l1 = ["crush-fitness", "comptek", "aerocorp", "syscore", "The-Cave"]
-        var l2 = ns.getPurchasedServers();
+        var l1 = ["The-Cave"]
         var have = false
         for (var i = 0; i < l1.length; i++) {
             if (a == l1[i]) {
@@ -73,59 +68,70 @@ async function fresh (ns, a) {
                 break
             }
         }
-        for (var i = 0; i < l2.length; i++) {
-            var h = l2[i].split("_")[0]
-            if (a == h) {
-                have = true
-                break
-            }
-        }
         if (!have) {
-            var name = a + "_0"
-            ns.purchaseServer(name, 1024);
-            await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], name);
-            ns.exec("easy_loop.js", name, 1, a, 1024)
-        }
-    }
-}
-async function attack (ns, a) {
-    var keys = 0
-    if (ns.fileExists("brutessh.exe")) {
-        keys++
-        if (ns.fileExists("ftpcrack.exe")) {
-            keys++
-            if (ns.fileExists("relaysmtp.exe")) {
-                keys++
-                if (ns.fileExists("httpworm.exe")) {
-                    keys++
-                    if (ns.fileExists("sqlinject.exe")) {
-                        keys++
+            var l2 = ns.getPurchasedServers();
+            var purchased = false
+            for (var j = 0; j < fre; j++) {
+                var h = a + "_" + j
+                for (var i = 0; i < l2.length; i++) {
+                    if (h == l2[i]) {
+                        purchased = true
+                        break
+                    }
+                }
+                if (!purchased) {
+                    if (await ns.prompt("buy server by " + ns.getPurchasedServerCost(1024) / 1000000 + "m?")) {
+                        ns.purchaseServer(h, 1024);
+                        ns.tprint("bought server " + h + "!")
+                        await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], h);
+                        ns.exec("easy_loop.js", h, 1, a, 1024)
                     }
                 }
             }
-
         }
     }
-    if (ns.getServerNumPortsRequired(a) <= keys) {
-        ns.print("attack: " + a)
-        if (keys > 0) {
-            ns.brutessh(a);
-            if (keys > 1) {
-                ns.ftpcrack(a);
-                if (keys > 2) {
-                    ns.relaysmtp(a);
-                    if (keys > 3) {
-                        ns.httpworm(a);
-                        if (keys > 4) {
-                            ns.sqlinject(a);
+}
+async function attack (ns, a, fre) {
+    if (a.search("_") != -1) {
+        await fresh(ns, a, fre);
+    }
+    else {
+        var keys = 0
+        if (ns.fileExists("brutessh.exe")) {
+            keys++
+            if (ns.fileExists("ftpcrack.exe")) {
+                keys++
+                if (ns.fileExists("relaysmtp.exe")) {
+                    keys++
+                    if (ns.fileExists("httpworm.exe")) {
+                        keys++
+                        if (ns.fileExists("sqlinject.exe")) {
+                            keys++
                         }
                     }
                 }
             }
-
         }
-        ns.nuke(a);
-        await fresh(ns, a);
+        if (ns.getServerNumPortsRequired(a) <= keys) {
+            ns.print("attack: " + a)
+            if (keys > 0) {
+                ns.brutessh(a);
+                if (keys > 1) {
+                    ns.ftpcrack(a);
+                    if (keys > 2) {
+                        ns.relaysmtp(a);
+                        if (keys > 3) {
+                            ns.httpworm(a);
+                            if (keys > 4) {
+                                ns.sqlinject(a);
+                            }
+                        }
+                    }
+                }
+            }
+            ns.nuke(a);
+            await fresh(ns, a, fre);
+        }
     }
 }
 
@@ -140,7 +146,7 @@ function str (len, a) {
 
 async function loop (ns, fre, a, len, father) {
     if ((!ns.hasRootAccess(a)) || (fre != null)) {
-        await attack(ns, a);
+        await attack(ns, a, fre);
     }
     // ns.print(str(len,a))
     var t = ns.ls(a, "cct");

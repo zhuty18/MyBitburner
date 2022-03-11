@@ -1,8 +1,7 @@
 /** @param {NS} ns **/
 export async function main (ns) {
     var filename = [
-        "basic", "easy_loop", "find", "grow", "hack", "refresh",
-        "scan", "weaken", "prepare", "foo", "join", "purchase"
+        "basic", "easy_loop", "find", "grow", "hack", "refresh", "scan", "weaken", "prepare", "foo", "join", "purchase", "home_run"
     ]
     for (var i = 0; i < filename.length; i++) {
         var n = filename[i] + ".js"

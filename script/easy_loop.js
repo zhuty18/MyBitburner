@@ -5,7 +5,9 @@ export async function main (ns) {
     var gw = (ram - 3.3) / 1.75
     var h = (ram - 3.3) / 1.7
     while (true) {
-        if ((ns.getServerMoneyAvailable(target) / ns.getServerMaxMoney(target)) < 0.05) {
+        var ava_money = ns.getServerMoneyAvailable(target)
+        var max_money = ns.getServerMaxMoney(target)
+        if (((ava_money / max_money) - gw * 0.003 < 0.05) && (ava_money != max_money)) {
             ns.run("grow.js", gw, target)
             await ns.asleep(ns.getGrowTime(target) + 1000)
         }

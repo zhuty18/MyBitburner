@@ -1,4 +1,4 @@
-a = ["82113243", -90]
+a = ["81818046", 51]
 
 def allExpressions(data, target):
     operators = ['+', '-', '*', '']
@@ -26,4 +26,4 @@ def allExpressions(data, target):
     return exp
 
 
-print(",".join(allExpressions(a[0], a[1])))
+print("["+",".join(allExpressions(a[0], a[1]))+"]")

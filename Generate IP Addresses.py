@@ -1,4 +1,4 @@
-a = "25525511135"
+a = "6418249141"
 l = len(a)
 pos = []
 
@@ -26,4 +26,4 @@ for i in range(1, 4):
                     if [j, k] in pos and [k, l] in pos:
                         res.append(a[0:i] + "." + a[i:j] + "." + a[j:k] + "." + a[k:l])
 
-print(", ".join(res))
+print("["+", ".join(res)+"]")

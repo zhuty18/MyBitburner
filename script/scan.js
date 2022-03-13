@@ -52,12 +52,17 @@ async function fresh (ns, a, fre) {
                 // await ns.installBackdoor(target);
                 target = "n00dles"
             }
-            if (ram < 8) {
-                await ns.scp(["foo.js"], a);
-                ns.exec("foo.js", a, ram / 1.7, target)
+            if (ram <= 8) {
+                await ns.scp(["share.js"], a);
+                ns.exec("share.js", a, ram / 4)
             }
             else if (target != "home") {
                 ns.exec("easy_loop.js", a, 1, target, ram)
+                if (ram <= 32) {
+                    var r = ns.getServerMaxRam("home")
+                    ns.exec("easy_loop.js", "home", 1, target, r / 16 - 1)
+                    ns.tprint("home hacking " + target)
+                }
             }
         }
         else {
@@ -71,8 +76,8 @@ async function fresh (ns, a, fre) {
             }
             if (!have) {
                 var l2 = ns.getPurchasedServers();
-                var purchased = false
                 for (var j = 0; j < fre; j++) {
+                    var purchased = false
                     var h = a + "_" + j
                     for (var i = 0; i < l2.length; i++) {
                         if (h == l2[i]) {

@@ -1,27 +1,28 @@
 /** @param {NS} ns **/
 export async function main (ns) {
     var target = ns.args[0]
-    var ram = ns.args[1]
-    var chance = ns.hackAnalyzeChance(target);
-    var grow_time = ns.getGrowTime(target);
-    var hack_time = ns.getHackTime(target);
-    var weaken_time = ns.getWeakenTime(target);
-    var grow_money = ns.getServerGrowth(target) * ns.getServerMoneyAvailable(target);
-    var hack_money = ns.hackAnalyze(target) * chance;
-    var grow_thread = (hack_money * grow_time) / (grow_money * hack_time);
-    var grow_security = grow_thread * 0.004;
-    var hack_security = chance * 0.002;
-    var weaken_thread_g = (grow_security * weaken_time) / (0.05 * grow_time);
-    var weaken_thread_h = (hack_security * weaken_time) / (0.05 * hack_time);
-    var ram_use = 1.7 + (weaken_thread_g + weaken_thread_h + grow_thread) * 1.75
-    var m = ram / ram_use
-    var hack_t = m
-    var grow_t = grow_thread * m
-    var weaken_t_g = weaken_thread_g * m
-    var weaken_t_h = weaken_thread_h * m
-    var ale = "hack thread: " + hack_t + "\n"
-    ale += "grow thread: " + grow_t + "\n"
-    ale += "weaken_g thread: " + weaken_t_g + "\n"
-    ale += "weaken_h thread: " + weaken_t_h + "\n"
-    ns.alert(ale)
+    var cores = 4
+    while (true) {
+        var max_money = ns.getServerMaxMoney(target)
+        var ava_money = ns.getServerMoneyAvailable(target)
+        var g_time = ns.getGrowTime(target)
+        var w_time = ns.getWeakenTime(target)
+        var h_time = ns.getHackTime(target)
+        var th_g = ns.growthAnalyze(target, max_money / ava_money, cores)
+        var th_h = ns.hackAnalyzeThreads(target, max_money)
+        var th_w_g = ns.growthAnalyzeSecurity(th_g) / 0.05
+        var th_w_h = ns.hackAnalyzeSecurity(th_h) / 0.05
+        ns.print(max_money + " " + ava_money)
+        ns.print(th_g + " " + th_w_g)
+        ns.print(th_h + " " + th_w_h)
+        if (th_g > 0) {
+            ns.run("grow.js", th_g, target)
+            await ns.asleep(g_time - w_time + 200)
+            ns.run("weaken.js", th_w_g, target)
+            await ns.asleep(400)
+        }
+        ns.run("weaken.js", th_w_h, target)
+        await ns.asleep(w_time - h_time - 200)
+        ns.run("hack.js", th_h, target)
+    }
 }

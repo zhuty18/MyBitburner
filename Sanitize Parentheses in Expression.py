@@ -1,4 +1,4 @@
-a = ")("
+a = "((a(a()(((()(a((("
 
 
 def remove_one_part(start_string):
@@ -51,7 +51,7 @@ for remove in range(max_removals):
                 final_list.append(new_possible[i])
 
         # Print and stop after possibilities have been calculated
-        print(set(final_list))
+        print("["+",".join(final_list)+"]")
         break
 
     current_possible = new_possible

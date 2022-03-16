@@ -20,8 +20,8 @@ export async function main (ns) {
 async function fresh (ns, a, fre) {
     await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], a);
     var ram = ns.getServerMaxRam(a)
-    if (a.search("_") != -1) {
-        var target = a.split("_")[0]
+    if (a.search("--") != -1) {
+        var target = a.split("--")[0]
         ns.exec("easy_loop.js", a, 1, target, ram)
     }
     else {
@@ -56,7 +56,7 @@ async function fresh (ns, a, fre) {
                 await ns.scp(["share.js"], a);
                 ns.exec("share.js", a, ram / 4)
             }
-            else if (target != "home") {
+            if (target != "home") {
                 ns.exec("easy_loop.js", a, 1, target, ram)
                 if (ram <= 32) {
                     var r = ns.getServerMaxRam("home")
@@ -78,7 +78,7 @@ async function fresh (ns, a, fre) {
                 var l2 = ns.getPurchasedServers();
                 for (var j = 0; j < fre; j++) {
                     var purchased = false
-                    var h = a + "_" + j
+                    var h = a + "--" + j
                     for (var i = 0; i < l2.length; i++) {
                         if (h == l2[i]) {
                             purchased = true

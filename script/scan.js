@@ -58,9 +58,9 @@ async function fresh (ns, a, fre) {
             }
             if (target != "home") {
                 ns.exec("easy_loop.js", a, 1, target, ram)
-                if (ram <= 32) {
+                if ((ram <= 32) && (target != "darkweb")) {
                     var r = ns.getServerMaxRam("home")
-                    ns.exec("easy_loop.js", "home", 1, target, r / 16 - 1)
+                    ns.exec("easy_loop.js", "home", 1, target, r / 25 - 1)
                     ns.tprint("home hacking " + target)
                 }
             }

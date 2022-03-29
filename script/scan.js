@@ -18,14 +18,16 @@ export async function main (ns) {
     }
 }
 async function fresh (ns, a, fre) {
-    await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], a);
+    if (a == "w0r1d_d43m0n") {
+        return
+    }
     var ram = ns.getServerMaxRam(a)
     if (a.search("--") != -1) {
         var target = a.split("--")[0]
         ns.exec("easy_loop.js", a, 1, target, ram)
     }
     else {
-        ns.tprint("get access of " + a + " " + ram)
+        ns.tprint("get access of " + a + " " + ram + " " + ns.getServerRequiredHackingLevel(a))
         ns.print("get access of " + a + "!")
         if (ram != 0) {
             var target = a
@@ -57,12 +59,8 @@ async function fresh (ns, a, fre) {
                 ns.exec("share.js", a, ram / 4)
             }
             if (target != "home") {
+                await ns.scp(["easy_loop.js", "hack.js", "grow.js", "weaken.js"], a);
                 ns.exec("easy_loop.js", a, 1, target, ram)
-                if ((ram <= 32) && (target != "darkweb")) {
-                    var r = ns.getServerMaxRam("home")
-                    ns.exec("easy_loop.js", "home", 1, target, r / 25 - 1)
-                    ns.tprint("home hacking " + target)
-                }
             }
         }
         else {
@@ -86,10 +84,10 @@ async function fresh (ns, a, fre) {
                         }
                     }
                     if (!purchased) {
-                        if (await ns.prompt("buy server by " + ns.getPurchasedServerCost(1024) / 1000000 + "m?")) {
+                        if (await ns.prompt("buy server for " + a + " by " + ns.getPurchasedServerCost(1024) / 1000000 + "m?")) {
                             ns.purchaseServer(h, 1024);
                             ns.tprint("bought server " + h + "!")
-                            await ns.scp(["basic.js", "easy_loop.js", "hack.js", "grow.js", "weaken.js", "prepare.js"], h);
+                            await ns.scp(["easy_loop.js", "hack.js", "grow.js", "weaken.js"], h);
                             ns.exec("easy_loop.js", h, 1, a, 1024)
                         }
                     }
@@ -97,9 +95,36 @@ async function fresh (ns, a, fre) {
             }
         }
     }
+    var l = ["darkweb", "home", "CSEC", "avmnite-02h", "I.I.I.I", "run4theh111z", ".", "The-Cave"]
+    for (var i = 0; i < l.length; i++) {
+        if (a == l[i]) {
+            return
+        }
+    }
+    var r = ns.getServerMaxRam("home")
+    if (r > 32768) {
+        ns.exec("easy_loop.js", "home", 1, target, r / 70 - 0.2)
+        ns.tprint("home hacking " + target)
+    }
+    else if ((r > 16384) && (ram > 0)) {
+        ns.exec("easy_loop.js", "home", 1, target, r / 46 - 0.5)
+        ns.tprint("home hacking " + target)
+    }
+    else if ((r > 8192) && (ram <= 64) && (ram > 0)) {
+        ns.exec("easy_loop.js", "home", 1, target, r / 36 - 0.5)
+        ns.tprint("home hacking " + target)
+    }
+    else if ((r > 1024) && (ram <= 32) && (ram > 0)) {
+        ns.exec("easy_loop.js", "home", 1, target, r / 25 - 0.5)
+        ns.tprint("home hacking " + target)
+    }
+    else if ((r > 128) && (ram <= 16) && (ram > 0)) {
+        ns.exec("easy_loop.js", "home", 1, target, r / 16 - 1)
+        ns.tprint("home hacking " + target)
+    }
 }
 async function attack (ns, a, fre) {
-    if (a.search("_") != -1) {
+    if (a.search("--") != -1) {
         await fresh(ns, a, fre);
     }
     else {
